@@ -1,0 +1,22 @@
+{% extends "home/base.html" %}
+
+
+{% block head %}
+    <title>Suggestions</title>
+{% endblock %}
+
+{% block content %}
+
+<h1>Thank you for sharing your Feedback/Suggestion with us.</h1>
+
+<br>
+
+<form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="reset">
+        <input id ="submit" type=submit>
+</form>
+
+{% endblock %}
+

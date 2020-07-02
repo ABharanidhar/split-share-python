@@ -1,0 +1,151 @@
+{% extends "split/base.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+<title>SplitShare</title>
+{% endblock %}
+
+
+{% block content %}
+{% if error_messages is not None %}
+{{ error_messages }}
+{% endif %}
+<form action="/split/create_groups/" method="post" onsubmit="return validateData()">
+    {% csrf_token %}
+    <p>
+        <label for="groupname">Group Name</label>
+        <input type="text" id="groupname" name="group_name" placeholder="Group Name" pattern="^[a-zA-Z ]+$"
+               title="characters only" required="required">
+    </p>
+
+    <p>
+        <label for="numberofpeople">Select Number of Families/Groups </label>
+        <select id="numberofpeople" name="number_of_people" onchange="displayNumberOfFieldsPerSelection()">
+            <option selected="selected">2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+    </p>
+    <div class="form-group row">
+        <div class="col-md-2"><input type="text" id="person_1" name="person_1" value="{{request.user.username|title}}" pattern="^[a-zA-Z ]+$"
+                                     title="characters only" required="required" class="form-control" placeholder="Person Name">
+        </div>
+        <div class="col-md-1"><input type="number" id="unit_1" name="unit_1" min="1" value="1" required="required"
+                                     class="form-control">
+        </div>
+    </div>
+    <div id="list">
+
+    </div>
+    <br><br>
+    &nbsp; &nbsp; &nbsp; <input type="reset"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    <input type="submit">
+</form>
+
+
+<script>
+$(document).ready(function(){
+   displayNumberOfFieldsPerSelection();
+});
+
+
+</script>
+
+<script>
+
+
+      function displayNumberOfFieldsPerSelection(){
+
+          var numberOfPeople = document.getElementById('numberofpeople').value;
+          var list_div = document.getElementById('list');
+          var person = 'person_';
+          var unit = 'unit_';
+          list_div.innerHTML='';
+          for(var i=2; i<=numberOfPeople; i++){
+
+              var div = document.createElement('div');
+              div.className = 'form-group row';
+              var inner_div_one = document.createElement('div');
+              inner_div_one.className = 'col-md-2';
+
+                var person_name = document.createElement('input');
+                person_name.type = 'text';
+                person_name.id = person+i.toString();
+                person_name.name = person+i.toString();
+                person_name.pattern = "^[a-zA-Z ]+$";
+                person_name.title = "characters only";
+                person_name.required="required";
+                person_name.className="form-control";
+                person_name.placeholder = 'Person Name';
+
+                var inner_div_two = document.createElement('div');
+              inner_div_two.className = 'col-md-1';
+
+
+                var small_gap = document.createElement('span');
+                small_gap.className = "input-group-addon";
+                small_gap.innerHTML = "&nbsp; &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp; &nbsp; ";
+
+                var units_per_person = document.createElement('input');
+                units_per_person.type = 'number';
+                units_per_person.id = unit+i.toString();
+                units_per_person.name = unit+i.toString();
+                units_per_person.min = 1;
+                units_per_person.required="required";
+                units_per_person.value = 1;
+                units_per_person.className="form-control";
+
+                div.appendChild(inner_div_one)
+                inner_div_one.appendChild(person_name);
+                div.appendChild(inner_div_two);
+                inner_div_two.appendChild(units_per_person);
+
+                document.getElementById("list").appendChild(div);
+          }
+      }
+
+      function validateData(){
+            var groupName = document.getElementById('groupname').value;
+            var numberOfPeople = document.getElementById('numberofpeople').value;
+            var names = [];
+            var status = true;
+
+            for(var i=1; i<= numberOfPeople; i++){
+                var name = "person_"+i.toString();
+                names.push(document.getElementById(name).value);
+            }
+            for(var i=0; i<numberOfPeople; i++){
+                for(var j=0; j<numberOfPeople && j != i; j++){
+                    if(names[i] == names[j]){
+                        alert("Atleast two persons are having same name. Kindly differentiate between two.");
+                        status = false;
+                        break;
+                    }
+                }
+            }
+
+            if(status){
+                for(var i=0; i< numberOfPeople; i++){
+                     if(names[i] == groupName){
+                        var warning_message = "Group Name is similar to one of the person name.\n Click 'OK' if you like to continue\n Click 'cancel' to change one of the names ";
+                        if(!(confirm(warning_message))){
+                            status = false;
+                        }
+                        break;
+                     }
+                }
+            }
+            return status;
+        }
+
+
+</script>
+
+{% endblock %}

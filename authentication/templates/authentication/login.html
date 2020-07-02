@@ -1,0 +1,23 @@
+{% extends 'authentication/base.html' %}
+
+{% block head %}
+<title>LOG IN</title>
+{% endblock %}
+
+{% block content %}
+{% if not user.is_authenticated %}
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+{% else %}
+<h1>Already Logging in </h1>
+<ul>
+    <li><a href="/authentication/logout">LOGOUT</a></li>
+    <li><a href="/split/">GO to main page</a></li>
+</ul>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "split/base.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+    <title>Results</title>
+{% endblock %}
+
+{% block content %}
+
+<h1>Results</h1>
+<ul>
+{% for result in result_details %}
+    <li>{{ result.owe_by|title }} <i>owes</i> <b> Rs.{{ result.amount }}/- </b> <i>to</i> {{ result.owe_to|title }} </li>
+
+{% endfor %}
+
+</ul>
+
+
+{% endblock %}

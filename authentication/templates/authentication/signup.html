@@ -1,0 +1,35 @@
+{% extends "authentication/base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<title>Authentication</title>
+{% endblock %}
+
+{% block content %}
+
+{% if not user.is_authenticated %}
+<center><h2>Sign up</h2></center>
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+        {% endfor %}
+    </p>
+    {% endfor %}
+    <button type="submit">Sign up</button>
+    <br><br><b>Already Registered? <a href="/authentication/login/"> Click Here </a> to Sign in</b>
+</form>
+
+{% else %}
+<h1>Already Logging in </h1>
+<ul>
+    <li><a href="/authentication/logout">LOGOUT</a></li>
+    <li><a href="/split/">GO to main page</a></li>
+</ul>
+
+{% endif %}
+{% endblock %}

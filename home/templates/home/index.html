@@ -1,0 +1,27 @@
+{% extends "home/base.html" %}
+
+
+{% block head %}
+    <title>Welcome to SplitShare</title>
+{% endblock %}
+
+{% block content %}
+
+<h1> WELCOME TO SPLIT SHARES </h1>
+<p>
+Boored of calculating shares among each other for a trip??? <br>
+No matter it's a trip of Group of Individuals/Families . <br>
+We will help you to know the amount you need to pay or receive.
+</p>
+<br>
+<ul>
+    {% if user.is_authenticated %}
+        <li><a href="/authentication/logout">LOGOUT</a></li>
+    {% else %}
+        <li><a href="/authentication/login">LOGIN</a></li>
+        <li><a href="/authentication/signup">REGISTER</a></li>
+    {% endif %}
+    <li><a href="/split/">Start with application</a></li>
+</ul>
+
+{% endblock %}

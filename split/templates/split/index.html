@@ -1,0 +1,60 @@
+{% extends "split/base.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+    <title>SplitShare</title>
+    <style>
+        .card{
+            float: left;
+            padding: 5px;
+            border: 2px #000000 solid;
+            margin: 5px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+<center> <h2> Welcome <b>{{request.user.username}}</b> </h2> </center>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">New Group</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Wish to Create a new Group</h6>
+        <p class="card-text">Choose from the below buttons</p>
+        <a href="create_group/" class="card-link" > For individual</a>
+        <a href="create_groups/" class="card-link">For Family</a>
+    </div>
+</div>
+
+{% if groups is not None %}
+{% for group in groups %}
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ group.group_name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted"></h6>
+        <p class="card-text"></p>
+        <a href="/split/delete/{{ group.id }}" class="card-link deleteButton" onclick="return confirmBox()">Delete</a>
+        <a href="/split/open/{{ group.id }}" class="card-link">open</a>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<script>
+
+$(document).ready(function(){
+
+    $(".deleteButton").click(function(){
+        if(confirm("are you sure want to delete ?")){
+            alert("Delete functionality is disabled by administration.\n WIP ..! ");
+            return true;
+        }
+        return false;
+    });
+
+});
+</script>
+
+{% endblock %}
