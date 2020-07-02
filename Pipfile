@@ -4,12 +4,12 @@ verify_ssl = true
 
 [packages]
 dj-database-url = "*"
-django = "2.2.13"
+django = "*"
 gunicorn = "*"
 django-heroku = "*"
 psycopg2 = "*"
 whitenoise = "*"
-requests = "2.20.0"
+requests = "*"
 
 [requires]
 python_version = "3.6"
